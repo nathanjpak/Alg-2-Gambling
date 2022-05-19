@@ -1,0 +1,30 @@
+.header {
+    background-color: #18191A;
+    color: whitesmoke;
+    font-weight: bold;
+    font-size: 24px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 4px;
+    gap: 4px;
+}
+
+#money {
+    color: white;
+    font-size 24px;
+    font-weight: bolder;
+}
+
+.container {
+    display: flex;
+    background-color: grey;
+    color: darkslategrey;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dealHeader {
+    font-size: 24px;
+    font-weight: bold;
+}

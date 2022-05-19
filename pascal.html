@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mr. Pak's Deals</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="header">
+    Your money: 
+    <div id="money">
+    </div>
+  </div>
+  <div id="container">
+
+  </div>
+  
+  <script>
+    // Your JavaScript goes here!
+    //console.log("Hello, World!")
+
+    //declarations
+    let dealFiveChoices = ["rock", "paper", "scissors"];
+    let money = 100;
+    let moneyDiv = document.getElementById("money");
+    let container = document.getElementById("container");
+    let skipCount = 0;
+    const expectedValue = (100-1+1.3+0.1-5.5+1.3);
+    const maxValue = (100+5+10+5+12+10);
+
+    //onload
+    function onLoad() {
+      updateMoney();
+      loadOne();
+    }
+    onLoad();
+
+    //Loading Functions
+    function loadOne() {
+      let header = document.createElement("div");
+      header.classList.add("dealHeader");
+      header.textContent = "Deal One: Heads or Tails?";
+      let description = document.createElement("p");
+      description.classList.add("dealDescription");
+      description.textContent = `Let's say we flip a coin.\nIf it's heads, you win $5.\nIf it's tails, you lose $7.`
+      container.appendChild(header);
+      container.appendChild(description);
+      //buttons
+      let choices = document.createElement("div");
+      description.classList.add("choices");
+      let flip = document.createElement("button");
+      flip.textContent = "Flip Coin"
+      flip.onclick = () => dealOne();
+      let skip = createSkip();
+      skip.onclick = () => {skipCount++; loadTwo()};
+      
+      choices.appendChild(flip);
+      choices.appendChild(skip);
+      
+      container.appendChild(choices);
+    }
+
+    function loadTwo() {
+      clearContainer();
+      let header = document.createElement("div");
+      header.classList.add("dealHeader");
+      header.textContent = "Deal Two: 6-Sided Die";
+      let description = document.createElement("p");
+      description.classList.add("dealDescription");
+      description.textContent = "Let's say we roll a 6-sided die.\nIf the result is 1 or 2, you win $10. If it's anything else, you lose $3.";
+      container.appendChild(header);
+      container.appendChild(description);
+      //buttons
+      let choices = document.createElement("div");
+      description.classList.add("choices");
+      let roll = document.createElement("button");
+      roll.textContent = "Roll the Die?"
+      roll.onclick = () => dealTwo();
+      let skip = createSkip();
+      skip.onclick = () => {skipCount++; loadThree()};
+      
+      choices.appendChild(roll);
+      choices.appendChild(skip);
+      
+      container.appendChild(choices);
+    }
+
+    function loadThree() {
+      clearContainer();
+      let header = document.createElement("div");
+      header.classList.add("dealHeader");
+      header.textContent = "Deal Three: Free Throw";
+      let description = document.createElement("p");
+      description.classList.add("dealDescription");
+      description.textContent = "Jordan Poole is about to shoot a free throw.\nThis year, he's made 92.5% of his free throws.\nIf he makes it, you get $5.\nIf he misses, you lose $60.";
+      container.appendChild(header);
+      container.appendChild(description);
+      //buttons
+      let choices = document.createElement("div");
+      description.classList.add("choices");
+      let roll = document.createElement("button");
+      roll.textContent = "Buckets!"
+      roll.onclick = () => dealThree();
+      let skip = createSkip();
+      skip.onclick = () => {skipCount++; loadFour()};
+      
+      choices.appendChild(roll);
+      choices.appendChild(skip);
+      
+      container.appendChild(choices);
+    }
+
+    function loadFour() {
+      clearContainer();
+      let header = document.createElement("div");
+      header.classList.add("dealHeader");
+      header.textContent = "Deal Four: Another Die";
+      let description = document.createElement("p");
+      description.classList.add("dealDescription");
+      description.textContent = "Let's say we roll a 6-sided die again.\nThis time, if the result is a 1 or 2, you win $12.\n If the result is 3, 4, or 5, you lose $2.\n. If the result is a 6, you lose $50.";
+      container.appendChild(header);
+      container.appendChild(description);
+      //buttons
+      let choices = document.createElement("div");
+      description.classList.add("choices");
+      let roll = document.createElement("button");
+      roll.textContent = "Roll the Die!"
+      roll.onclick = () => dealFour();
+      let skip = createSkip();
+      skip.onclick = () => {skipCount++; loadFive()};
+      
+      choices.appendChild(roll);
+      choices.appendChild(skip);
+      
+      container.appendChild(choices);
+    }
+
+    function loadFive() {
+      clearContainer();
+      clearContainer();
+      let header = document.createElement("div");
+      header.classList.add("dealHeader");
+      header.textContent = "Deal Five: Rock-Paper-Scissors";
+      let description = document.createElement("p");
+      description.classList.add("dealDescription");
+      description.textContent = "Let's play rock-paper-scissors.\nIf you win, you win $10.\nIf you lose, you lose $5.\nIf we tie, you lose $1.";
+      container.appendChild(header);
+      container.appendChild(description);
+      //buttons
+      let choices = document.createElement("div");
+      description.classList.add("choices");
+      let rock = document.createElement("button");
+      rock.textContent = "Rock"
+      rock.onclick = () => dealFive("rock");
+      let paper = document.createElement("button");
+      paper.textContent = "Paper"
+      paper.onclick = () => dealFive("paper");
+      let scissors = document.createElement("button");
+      scissors.textContent = "Scissors"
+      scissors.onclick = () => dealFive("scissors");
+      let skip = createSkip();
+      skip.onclick = () => checkFinalSkip();
+      choices.appendChild(rock);
+      choices.appendChild(paper);
+      choices.appendChild(scissors);
+      choices.appendChild(skip);
+      
+      container.appendChild(choices);
+    }
+
+    //common buttons
+    function createSkip() {
+      let button = document.createElement("button");
+      button.textContent = "Skip This Deal";
+      return button;
+    }
+
+    //Deal 1
+    function dealOne() {
+      let coin; 
+      coin = Math.random();
+      console.log(coin);
+      (coin >= 0.5) ? winOne() : loseOne();
+    }
+
+    function winOne() {
+      console.log("You won!");
+      money += 5;
+      updateMoney();
+      alert(`Heads! You won $5.`);
+      loadTwo();
+    }
+
+    function loseOne() {
+      console.log("You lost!");
+      money -= 7;
+      updateMoney();
+      alert(`Tails! You lost $7.`);
+      loadTwo();
+    }
+
+    //Deal 2
+    function dealTwo() {
+      let dice; 
+      dice = getRandomInt(6)+1;
+      console.log(dice);
+      (dice < 3) ? winTwo(dice) : loseTwo(dice);
+    }
+
+    function winTwo(num) {
+      console.log(`You won! You rolled a ${num}`);
+      money += 10;
+      updateMoney();
+      alert(`You rolled a ${num}! You won $10.`);
+      loadThree();
+    }
+
+    function loseTwo(num) {
+      console.log(`You lost! You rolled a ${num}`)
+      money -= 3;
+      updateMoney();
+      alert(`You rolled a ${num}! You lost $7.`)
+      loadThree();
+    }
+
+    //Deal 3
+    function dealThree() {
+      let freeThrow
+      freeThrow = Math.random();
+      console.log(freeThrow);
+      (freeThrow < 0.925) ? winThree() : loseThree();
+    }
+
+    function winThree() {
+      console.log("He made it!");
+      money += 5;
+      updateMoney();
+      alert("He made it! You won $5.");
+      loadFour();
+    }
+
+    function loseThree() {
+      console.log("He missed!");
+      money -= 60;
+      updateMoney();
+      alert("Oh no! He missed! You lost $60.");
+      loadFour();
+    }
+
+    //Deal 4
+    function dealFour() {
+      let dice
+      dice = getRandomInt(6)+1;
+      console.log(dice);
+      switch(dice) {
+        case 1:
+        case 2: 
+          winFour(dice);
+          break;
+        case 6:
+          loseFourBadly();
+          break;
+        default:
+          loseFour(dice);
+      }
+    }
+
+    function winFour(num) {
+      console.log(`You won! You rolled a ${num}`);
+      money += 12;
+      updateMoney();
+      alert(`You rolled a ${num}! You won $12.`);
+      loadFive();
+    }
+
+    function loseFour(num) {
+      console.log(`You lost! You rolled a ${num}`)
+      money -= 2;
+      updateMoney();
+      alert(`You rolled a ${num}! You lost $2.`)
+      loadFive();
+    }
+
+    function loseFourBadly() {
+      console.log("Oh no! You rolled a 6!");
+      money -= 50;
+      updateMoney();
+      alert(`Oh no! You rolled a 6! You lost $50.`)
+      loadFive();
+    }
+
+    //Deal 5
+    function dealFive(choice) {
+      let hand;
+      let x;
+      x = getRandomInt(3);
+      hand = dealFiveChoices[x];
+      console.log(hand);
+      (hand == choice) ? dealFiveTie(hand) : checkRockPaperScissors(choice, hand);
+    }
+
+    function dealFiveWin(comp) {
+      console.log(`You won! The opponent chose ${comp}`)
+      money += 10;
+      updateMoney();
+      alert(`You won! The opponent chose ${comp}. \nYou won $10.`);
+      finish();
+    }
+
+    function dealFiveLose(comp) {
+      console.log(`You lost! The opponent chose ${comp}`);
+      money -= 5;
+      updateMoney();
+      alert(`You lost! The opponent chose ${comp}. \nYou lost $5.`);
+      finish();
+    }
+
+    function dealFiveTie(comp) {
+      console.log(`You tied! The opponent chose ${comp}`);
+      money -= 1;
+      updateMoney();
+      alert(`You tied! The opponent chose ${comp}. \nYou lost $1.`)
+      finish();
+    }
+
+    function finish() {
+      if (money < 0) {
+        if (confirm(`You made ${money} and some terrible life decisions.\nStart over?`)) {
+          window.location.reload();
+        }
+        else {
+          alert("Oh. Ok.");
+          clearContainer();
+        }
+      } else if (money < expectedValue) {
+        if (confirm(`You made ${money}, but I think you could do better.\nStart over?`)) {
+          window.location.reload();
+        }
+        else {
+          alert("Oh. Ok.");
+          clearContainer();
+        }
+      } else if (money < maxValue) {
+        if (confirm(`You made ${money}. Great job!\nStart over?`)) {
+          window.location.reload();
+        }
+        else {
+          alert("Oh. Ok.");
+          clearContainer();
+        }
+      } else {
+        if (confirm(`Wow, you made ${money}! You're certainly a lucky person.\nStart over?`)) {
+          window.location.reload();
+        }
+        else {
+          alert("Understandable. It's quite the achievement.");
+          clearContainer();
+        }
+      }      
+    }
+
+    function checkRockPaperScissors(player, comp) {
+      if (player == "rock") {
+        (comp == "scissors") ? dealFiveWin(comp) : dealFiveLose(comp);
+      }
+      else if (player == "scissors") {
+        (comp == "paper") ? dealFiveWin(comp) : dealFiveLose(comp);
+      }
+      else {
+        (comp == "rock") ? dealFiveWin(comp) : dealFiveLose(comp);
+      }
+    }
+
+    //misc functions
+
+    function checkFinalSkip() {
+      (skipCount == 4) ? alert("You can't skip them all!") : finish();
+    }
+
+    function updateMoney() {
+      (money < 0) ? moneyDiv.textContent= `-$${-money}` : moneyDiv.textContent =` $${money}`;
+    }
+
+    function clearContainer() {
+      while (container.firstChild) {
+        container.removeChild(container.firstChild);
+      }
+    }
+    
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    }
+
+  </script>
+</body>
+</html>
