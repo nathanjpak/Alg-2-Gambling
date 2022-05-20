@@ -20,21 +20,28 @@
     //console.log("Hello, World!")
 
     //declarations
-    let dealFiveChoices = ["rock", "paper", "scissors"];
     let money = 50;
     let moneyDiv = document.getElementById("money");
-    let container = document.getElementById("container");
     let skipCount = 0;
+
+    let container = document.getElementById("container");
+    let choices = document.createElement("div");
+
     const maxValue = (5+10+5+12+10);
+    const dealFiveChoices = ["rock", "paper", "scissors"];
 
     //onload
     function onLoad() {
       updateMoney();
       loadOne();
     }
-    onLoad();
+
+
 
     //Loading Functions
+
+    
+
     function loadOne() {
       let header = document.createElement("div");
       header.classList.add("dealHeader");
@@ -44,18 +51,9 @@
       description.textContent = `Let's say we flip a coin.\nIf it's heads, you win $5.\nIf it's tails, you lose $7.`
       container.appendChild(header);
       container.appendChild(description);
-      //buttons
-      let choices = document.createElement("div");
-      description.classList.add("choices");
-      let flip = document.createElement("button");
-      flip.textContent = "Flip Coin"
-      flip.onclick = () => dealOne();
-      let skip = createSkip();
-      skip.onclick = () => {skipCount++; loadTwo()};
-      
-      choices.appendChild(flip);
-      choices.appendChild(skip);
-      
+      createButton("Flip Coin", dealOne);
+      createSkip(loadTwo);
+
       container.appendChild(choices);
     }
 
@@ -70,17 +68,9 @@
       container.appendChild(header);
       container.appendChild(description);
       //buttons
-      let choices = document.createElement("div");
-      description.classList.add("choices");
-      let roll = document.createElement("button");
-      roll.textContent = "Roll the Die?"
-      roll.onclick = () => dealTwo();
-      let skip = createSkip();
-      skip.onclick = () => {skipCount++; loadThree()};
-      
-      choices.appendChild(roll);
-      choices.appendChild(skip);
-      
+      createButton("Roll the Die?", dealTwo);
+      createSkip(loadThree);
+
       container.appendChild(choices);
     }
 
@@ -95,17 +85,9 @@
       container.appendChild(header);
       container.appendChild(description);
       //buttons
-      let choices = document.createElement("div");
-      description.classList.add("choices");
-      let roll = document.createElement("button");
-      roll.textContent = "Buckets!"
-      roll.onclick = () => dealThree();
-      let skip = createSkip();
-      skip.onclick = () => {skipCount++; loadFour()};
-      
-      choices.appendChild(roll);
-      choices.appendChild(skip);
-      
+      createButton("Buckets!", dealThree);
+      createSkip(loadFour);
+            
       container.appendChild(choices);
     }
 
@@ -120,22 +102,13 @@
       container.appendChild(header);
       container.appendChild(description);
       //buttons
-      let choices = document.createElement("div");
-      description.classList.add("choices");
-      let roll = document.createElement("button");
-      roll.textContent = "Roll the Die!"
-      roll.onclick = () => dealFour();
-      let skip = createSkip();
-      skip.onclick = () => {skipCount++; loadFive()};
-      
-      choices.appendChild(roll);
-      choices.appendChild(skip);
+      createButton("Roll the Die!", dealFour);
+      createSkip(loadFive);
       
       container.appendChild(choices);
     }
 
     function loadFive() {
-      clearContainer();
       clearContainer();
       let header = document.createElement("div");
       header.classList.add("dealHeader");
@@ -146,32 +119,44 @@
       container.appendChild(header);
       container.appendChild(description);
       //buttons
-      let choices = document.createElement("div");
-      description.classList.add("choices");
-      let rock = document.createElement("button");
-      rock.textContent = "Rock"
-      rock.onclick = () => dealFive("rock");
-      let paper = document.createElement("button");
-      paper.textContent = "Paper"
-      paper.onclick = () => dealFive("paper");
-      let scissors = document.createElement("button");
-      scissors.textContent = "Scissors"
-      scissors.onclick = () => dealFive("scissors");
-      let skip = createSkip();
-      skip.onclick = () => checkFinalSkip();
-      choices.appendChild(rock);
-      choices.appendChild(paper);
-      choices.appendChild(scissors);
-      choices.appendChild(skip);
+      createButton("Rock", dealFive, "rock");
+      createButton("Paper", dealFive, "paper");
+      createButton("Scissors", dealFive, "scissors");
+      createSkip(loadSix);
+      
+      container.appendChild(choices);
+    }
+
+    function loadSix() {
+      clearContainer();
+      let header = document.createElement("div");
+      header.classList.add("dealHeader");
+      header.textContent = "Deal Six: Free Throws - Evil Steph Curry Edition";
+      let description = document.createElement("p");
+      description.classList.add("dealDescription");
+      description.textContent = "You're watching free throws again, but Stephen Curry is at the line (Career: 90.7%).\nStephen Curry documentedly hates charity, so if he makes it you lose $15.\nBut if he misses, you win $75!";
+      container.appendChild(header);
+      container.appendChild(description);
+      //buttons
+      createButton("Clank!", dealSix);
+      createSkip(checkFinalSkip);
       
       container.appendChild(choices);
     }
 
     //common buttons
-    function createSkip() {
+    function createSkip(function_parameter) {
       let button = document.createElement("button");
       button.textContent = "Skip This Deal";
-      return button;
+      button.onclick = () => {skipCount++; function_parameter()};
+      choices.appendChild(button);
+    }
+
+    function createButton(text, func, function_parameter="") {
+      let button = document.createElement("button");
+      button.textContent = text;
+      button.onclick = () => func(function_parameter);
+      choices.appendChild(button);
     }
 
     //Deal 1
@@ -218,7 +203,7 @@
       console.log(`You lost! You rolled a ${num}`)
       money -= 3;
       updateMoney();
-      alert(`You rolled a ${num}! You lost $7.`)
+      alert(`You rolled a ${num}! You lost $3.`)
       loadThree();
     }
 
@@ -303,7 +288,7 @@
       money += 10;
       updateMoney();
       alert(`You won! The opponent chose ${comp}. \nYou won $10.`);
-      finish();
+      loadSix();
     }
 
     function dealFiveLose(comp) {
@@ -311,7 +296,7 @@
       money -= 5;
       updateMoney();
       alert(`You lost! The opponent chose ${comp}. \nYou lost $5.`);
-      finish();
+      loadSix();
     }
 
     function dealFiveTie(comp) {
@@ -319,6 +304,27 @@
       money -= 1;
       updateMoney();
       alert(`You tied! The opponent chose ${comp}. \nYou lost $1.`)
+      loadSix();
+    }
+
+    function dealSix() {
+      let freeThrow
+      freeThrow = Math.random();
+      console.log(freeThrow);
+      (freeThrow < 0.907) ? loseSix() : winSix();
+    }
+
+    function winSix() {
+      money += 75;
+      updateMoney();
+      alert(`He missed!\nYou won $75!`);
+      finish();
+    }
+
+    function loseSix() {
+      money -= 15;
+      updateMoney();
+      alert(`He made it.\nYou lost $15.`);
       finish();
     }
 
@@ -382,7 +388,7 @@
     //misc functions
 
     function checkFinalSkip() {
-      (skipCount == 4) ? alert("You can't skip them all!") : finish();
+      (skipCount > 4) ? alert("You can't skip them all!") : finish();
     }
 
     function updateMoney() {
@@ -393,11 +399,16 @@
       while (container.firstChild) {
         container.removeChild(container.firstChild);
       }
+      while (choices.firstChild) {
+        choices.removeChild(choices.firstChild);
+      }
     }
     
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
     }
+
+    onLoad();
 
   </script>
 </body>
